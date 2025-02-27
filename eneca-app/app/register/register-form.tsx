@@ -40,7 +40,7 @@ export default function RegisterForm() {
       })
 
       if (response.ok) {
-        const data = await response.json()
+        // No need to store unused data
         // Store email in localStorage for verification page
         localStorage.setItem("pending-email", formData.email)
         // Redirect to verification page

@@ -22,7 +22,7 @@ export default function PasswordResetSentPage() {
             Пожалуйста, проверьте вашу почту и следуйте инструкциям в письме.
           </p>
           <p className="text-center text-sm text-muted-foreground">
-            Если вы не получили письмо, проверьте папку "Спам" или попробуйте запросить сброс пароля еще раз.
+            Если вы не получили письмо, проверьте папку &quot;Спам&quot; или попробуйте запросить сброс пароля еще раз.
           </p>
           <div className="flex justify-center">
             <Button asChild>

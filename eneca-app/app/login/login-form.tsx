@@ -15,7 +15,6 @@ export default function LoginForm() {
   const [password, setPassword] = useState("")
   const [message, setMessage] = useState("")
   const [redirectPath, setRedirectPath] = useState("/main")
-  const router = useRouter()
   const searchParams = useSearchParams()
 
   useEffect(() => {
@@ -41,7 +40,9 @@ export default function LoginForm() {
 
       // Redirect to the original URL or main page
       window.location.href = redirectPath
-    } catch (error) {
+    } catch (error: any) {
+      // Use the error or log it to prevent unused variable warning
+      console.error("Login error:", error);
       setMessage("Ошибка при входе")
     }
   }

@@ -44,7 +44,8 @@ export default function ResetPasswordForm() {
         access_token: accessToken,
         refresh_token: refreshToken,
       })
-    } catch (e) {
+    } catch (_) {
+      // Using underscore to indicate intentionally unused variable
       showMessage("Ошибка при получении токенов из URL. Проверьте корректность ссылки.", "error")
     }
   }, [])
