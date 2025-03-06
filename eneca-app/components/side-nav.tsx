@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, LayoutTemplate, Home } from "lucide-react"
+import { Menu, LayoutTemplate, Home, FileText } from "lucide-react"
 
 const navigation = [
   {
@@ -17,6 +17,11 @@ const navigation = [
     name: "Planning",
     href: "/planning",
     icon: LayoutTemplate,
+  },
+  {
+    name: "Digest",
+    href: "/digest",
+    icon: FileText,
   },
 ]
 

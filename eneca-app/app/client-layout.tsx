@@ -17,6 +17,12 @@ const publicRoutes = [
   "/reset-password",
   "/pending-verification",
   "/password-reset-sent",
+  "/auth/login",
+  "/auth/register",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+  "/auth/pending-verification",
+  "/auth/password-reset-sent",
 ]
 
 export default function ClientRootLayout({

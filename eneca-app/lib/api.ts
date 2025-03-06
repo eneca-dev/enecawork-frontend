@@ -11,6 +11,7 @@ interface RegisterRequest {
   department: string
   team: string
   position: string
+  category: string
   email: string
   password: string
 }
@@ -38,7 +39,7 @@ interface UserProfile {
 
 export const api = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
-    const response = await fetch(`${API_URL}/auth/login`, {
+    const response = await fetch(`${API_URL}/auth/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

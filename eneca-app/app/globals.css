@@ -58,3 +58,36 @@
   }
 }
 
+/* Стили для Markdown-контента */
+.markdown-content {
+  @apply text-sm leading-relaxed;
+}
+
+.markdown-content h1 {
+  @apply text-xl font-bold mb-4;
+}
+
+.markdown-content h2 {
+  @apply text-lg font-semibold mt-4 mb-2;
+}
+
+.markdown-content p {
+  @apply mb-2;
+}
+
+.markdown-content strong {
+  @apply font-semibold;
+}
+
+.markdown-content ul {
+  @apply list-disc pl-5 mb-2;
+}
+
+.markdown-content li {
+  @apply mb-1;
+}
+
+.markdown-content hr {
+  @apply my-3 border-gray-600;
+}
+

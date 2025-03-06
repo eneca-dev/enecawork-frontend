@@ -9,6 +9,12 @@ const publicRoutes = [
   "/reset-password",
   "/pending-verification",
   "/password-reset-sent",
+  "/auth/login",
+  "/auth/register",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+  "/auth/pending-verification",
+  "/auth/password-reset-sent",
 ]
 
 export function middleware(request: NextRequest) {
@@ -16,11 +22,11 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // If the user is on the root path, redirect based on authentication status
-  if (pathname === "/") {
+  if (pathname === "/" || pathname === "/login") {
     if (token) {
       return NextResponse.redirect(new URL("/main", request.url))
     }
-    return NextResponse.redirect(new URL("/login", request.url))
+    return NextResponse.redirect(new URL("/auth/login", request.url))
   }
 
   // Allow access to public routes without authentication
@@ -37,7 +43,7 @@ export function middleware(request: NextRequest) {
     // Save the original URL to redirect after login
     const searchParams = new URLSearchParams()
     searchParams.set("from", pathname)
-    return NextResponse.redirect(new URL(`/login?${searchParams.toString()}`, request.url))
+    return NextResponse.redirect(new URL(`/auth/login?${searchParams.toString()}`, request.url))
   }
 
   return NextResponse.next()
