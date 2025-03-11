@@ -37,6 +37,7 @@ next-env.d.ts
 .vscode/
 *.swp
 *.swo
+.cursor/
 
 # Temporary files
 /temp
