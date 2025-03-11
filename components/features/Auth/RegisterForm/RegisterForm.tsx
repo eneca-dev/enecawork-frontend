@@ -3,15 +3,16 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import { RegisterFormData, RegisterRequest, Team, Category } from '@/types/auth.types';
 
 export function RegisterForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<RegisterFormData>({
     first_name: '',
     last_name: '',
     department: '',
-    team: '',
+    team: Team.GENERAL,
     position: '',
-    category: '',
+    category: Category.GENERAL,
     email: '',
     password: '',
     password_confirm: '',
@@ -19,7 +20,7 @@ export function RegisterForm() {
   const [passwordError, setPasswordError] = useState('');
   const { register, isLoading, error } = useAuth();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
@@ -34,8 +35,18 @@ export function RegisterForm() {
     setPasswordError('');
     
     try {
-      const { password_confirm, ...dataToSend } = formData;
-      await register(dataToSend);
+      const requestData: RegisterRequest = {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        department: formData.department,
+        team: formData.team,
+        position: formData.position,
+        category: formData.category,
+        email: formData.email,
+        password: formData.password
+      };
+      
+      await register(requestData);
       // Перенаправление произойдет в AuthContext
     } catch (err) {
       // Ошибка уже обрабатывается в AuthContext

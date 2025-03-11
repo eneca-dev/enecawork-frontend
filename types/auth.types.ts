@@ -58,7 +58,22 @@ export interface LoginResponse {
 }
 
 /**
- * Запрос на регистрацию
+ * Тип для формы регистрации (внутреннее использование в компоненте)
+ */
+export interface RegisterFormData {
+  first_name: string;
+  last_name: string;
+  department: string;
+  team: Team;
+  position: string;
+  category: Category;
+  email: string;
+  password: string;
+  password_confirm: string; // Только для фронтенда
+}
+
+/**
+ * Тип для запроса регистрации к API (отправляется на сервер)
  */
 export interface RegisterRequest {
   first_name: string;
@@ -69,7 +84,7 @@ export interface RegisterRequest {
   category: Category;
   email: string;
   password: string;
-  password_confirm: string;
+  // Без password_confirm
 }
 
 /**
