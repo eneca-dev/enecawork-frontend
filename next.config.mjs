@@ -2,8 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  // Дополнительные настройки для поддержки группировки маршрутов
-  // Группы маршрутов в скобках не будут отображаться в URL
+  // Дополнительные настройки при необходимости
 };
 
 export default nextConfig; 

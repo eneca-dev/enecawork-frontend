@@ -38,32 +38,54 @@ export function DashboardContent() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="border-b pb-2">
+              <span className="font-medium">ID:</span> {user.id}
+            </div>
+            
+            <div className="border-b pb-2">
               <span className="font-medium">Email:</span> {user.email}
             </div>
             
-            <div className="border-b pb-2">
-              <span className="font-medium">Имя:</span> {user.first_name || 'Не указано'}
-            </div>
+            {user.first_name && (
+              <div className="border-b pb-2">
+                <span className="font-medium">Имя:</span> {user.first_name}
+              </div>
+            )}
             
-            <div className="border-b pb-2">
-              <span className="font-medium">Фамилия:</span> {user.last_name || 'Не указана'}
-            </div>
+            {user.last_name && (
+              <div className="border-b pb-2">
+                <span className="font-medium">Фамилия:</span> {user.last_name}
+              </div>
+            )}
             
-            <div className="border-b pb-2">
-              <span className="font-medium">Отдел:</span> {user.department || 'Не указан'}
-            </div>
+            {user.department_id && (
+              <div className="border-b pb-2">
+                <span className="font-medium">ID отдела:</span> {user.department_id}
+              </div>
+            )}
             
-            <div className="border-b pb-2">
-              <span className="font-medium">Должность:</span> {user.position || 'Не указана'}
-            </div>
+            {user.position_id && (
+              <div className="border-b pb-2">
+                <span className="font-medium">ID должности:</span> {user.position_id}
+              </div>
+            )}
             
-            <div className="border-b pb-2">
-              <span className="font-medium">Команда:</span> {user.team || 'Не указана'}
-            </div>
+            {user.team_id && (
+              <div className="border-b pb-2">
+                <span className="font-medium">ID команды:</span> {user.team_id}
+              </div>
+            )}
             
-            <div className="border-b pb-2">
-              <span className="font-medium">Категория:</span> {user.category || 'Не указана'}
-            </div>
+            {user.category_id && (
+              <div className="border-b pb-2">
+                <span className="font-medium">ID категории:</span> {user.category_id}
+              </div>
+            )}
+            
+            {user.created_at && (
+              <div className="border-b pb-2">
+                <span className="font-medium">Дата создания:</span> {user.created_at}
+              </div>
+            )}
           </div>
         </div>
       ) : (

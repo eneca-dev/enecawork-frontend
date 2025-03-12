@@ -22,12 +22,13 @@ export enum Category {
 export interface User {
   id: string;
   email: string;
-  first_name: string;
-  last_name: string;
-  department: string;
-  team: Team;
-  position: string;
-  category: Category;
+  first_name?: string;
+  last_name?: string;
+  department_id?: string;
+  team_id?: string;
+  position_id?: string;
+  category_id?: string;
+  created_at?: string;
 }
 
 /**

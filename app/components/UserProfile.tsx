@@ -4,9 +4,9 @@ import { useAuth } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
 
 /**
- * Клиентский компонент для отображения профиля пользователя
+ * Клиентский компонент для отображения профиля пользователя на главной странице
  */
-export function UserProfile() {
+export function HomeUserProfile() {
   // Используем хук useAuth для получения данных пользователя
   const { user, isAuthenticated, isLoading } = useAuth();
   
@@ -38,20 +38,20 @@ export function UserProfile() {
             <p className="mb-2">Фамилия: {user.last_name}</p>
           )}
           
-          {user.department && (
-            <p className="mb-2">Отдел: {user.department}</p>
+          {user.department_id && (
+            <p className="mb-2">ID отдела: {user.department_id}</p>
           )}
           
-          {user.position && (
-            <p className="mb-2">Должность: {user.position}</p>
+          {user.position_id && (
+            <p className="mb-2">ID должности: {user.position_id}</p>
           )}
           
-          {user.team && (
-            <p className="mb-2">Команда: {user.team}</p>
+          {user.team_id && (
+            <p className="mb-2">ID команды: {user.team_id}</p>
           )}
           
-          {user.category && (
-            <p className="mb-2">Категория: {user.category}</p>
+          {user.category_id && (
+            <p className="mb-2">ID категории: {user.category_id}</p>
           )}
         </div>
       ) : (
