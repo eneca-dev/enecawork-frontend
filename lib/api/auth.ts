@@ -18,7 +18,7 @@ export const authApi = {
   /**
    * Вход в систему
    */
-  login: async (data: LoginRequest & { device_id?: string }): Promise<LoginResponse> => {
+  login: async (data: LoginRequest): Promise<LoginResponse> => {
     try {
       const response = await api.post('/auth/login', data);
       return response.data;

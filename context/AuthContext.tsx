@@ -8,7 +8,6 @@ import { userApi } from '@/lib/api/user';
 import { setAuthToken, removeAuthToken, getAuthToken, setRefreshToken, getRefreshToken, removeRefreshToken, isTokenValid } from '@/lib/utils/auth';
 import { DEFAULT_AUTH_REDIRECT } from '@/lib/config/constants';
 import { tokenService } from '@/lib/services/TokenService';
-import { generateDeviceId, getDeviceId, setDeviceId } from '@/lib/services/DeviceService';
 
 /**
  * Интерфейс контекста аутентификации
@@ -138,18 +137,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = async (data: LoginRequest) => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     try {
-      // Получаем или генерируем идентификатор устройства
-      const deviceId = getDeviceId() || generateDeviceId();
-      
-      // Добавляем deviceId к запросу на вход
-      const loginData = { ...data, device_id: deviceId };
-      
-      const response = await authApi.login(loginData);
+      const response = await authApi.login(data);
       setAuthToken(response.access_token);
       setRefreshToken(response.refresh_token);
-      
-      // Сохраняем идентификатор устройства
-      setDeviceId(deviceId);
       
       // Настраиваем проактивное обновление токена
       tokenService.setupSilentRefresh(response.access_token);
