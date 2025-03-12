@@ -173,7 +173,7 @@ export function RegisterForm() {
       </form>
       
       <div className="mt-4 text-center">
-        <Link href="/login" className="text-blue-600 hover:underline">
+        <Link href="/auth/login" className="text-blue-600 hover:underline">
           Уже есть аккаунт? Войти
         </Link>
       </div>

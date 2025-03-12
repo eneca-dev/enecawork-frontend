@@ -14,7 +14,7 @@ export function LoginForm() {
   const { login, isLoading, error } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const from = searchParams?.get('from') || '/main';
+  const from = searchParams?.get('from') || '/dashboard/main';
 
   /**
    * Обработчик отправки формы
@@ -78,11 +78,11 @@ export function LoginForm() {
       </form>
       
       <div className="mt-4 text-center">
-        <Link href="/register" className="text-blue-600 hover:underline">
+        <Link href="/auth/register" className="text-blue-600 hover:underline">
           Регистрация
         </Link>
         <span className="mx-2">|</span>
-        <Link href="/forgot-password" className="text-blue-600 hover:underline">
+        <Link href="/auth/forgot-password" className="text-blue-600 hover:underline">
           Забыли пароль?
         </Link>
       </div>

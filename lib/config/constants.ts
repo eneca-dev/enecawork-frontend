@@ -8,32 +8,32 @@ export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://enecawork-a63
  */
 export const PUBLIC_ROUTES = [
   '/',
-  '/login',
-  '/register',
-  '/forgot-password',
-  '/reset-password',
-  '/pending-verification',
-  '/password-reset-sent',
+  '/auth/login',
+  '/auth/register',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/pending-verification',
+  '/auth/password-reset-sent',
 ];
 
 /**
  * Маршруты аутентификации
  */
 export const AUTH_ROUTES = [
-  '/login',
-  '/register',
-  '/forgot-password',
-  '/reset-password',
-  '/pending-verification',
-  '/password-reset-sent',
+  '/auth/login',
+  '/auth/register',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/pending-verification',
+  '/auth/password-reset-sent',
 ];
 
 /**
  * Маршрут по умолчанию после успешной аутентификации
  */
-export const DEFAULT_AUTH_REDIRECT = '/main';
+export const DEFAULT_AUTH_REDIRECT = '/dashboard/main';
 
 /**
  * Маршрут по умолчанию для неаутентифицированных пользователей
  */
-export const DEFAULT_UNAUTHENTICATED_REDIRECT = '/login'; 
+export const DEFAULT_UNAUTHENTICATED_REDIRECT = '/auth/login'; 

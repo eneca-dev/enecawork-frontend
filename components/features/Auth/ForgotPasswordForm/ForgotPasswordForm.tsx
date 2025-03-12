@@ -21,7 +21,7 @@ export function ForgotPasswordForm() {
       await authApi.forgotPassword(email);
       setSuccess(true);
       setTimeout(() => {
-        router.push('/password-reset-sent');
+        router.push('/auth/password-reset-sent');
       }, 1500);
     } catch (err) {
       setError('Не удалось отправить инструкции по восстановлению пароля. Пожалуйста, проверьте email и попробуйте снова.');
@@ -77,7 +77,7 @@ export function ForgotPasswordForm() {
       )}
       
       <div className="mt-4 text-center">
-        <Link href="/login" className="text-blue-600 hover:underline">
+        <Link href="/auth/login" className="text-blue-600 hover:underline">
           Вернуться к входу
         </Link>
       </div>

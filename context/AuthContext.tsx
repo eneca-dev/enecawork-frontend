@@ -97,14 +97,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 ...prev, 
                 user: userData,
                 isAuthenticated: true, 
-                isLoading: false 
+                isLoading: false,
+                error: null
               }));
             } else {
               // Если данные пользователя не получены, но токен валиден
+              // Устанавливаем флаг аутентификации, но не устанавливаем данные пользователя
+              console.warn('User data not available, but token is valid');
               setState(prev => ({ 
                 ...prev, 
                 isAuthenticated: true, 
-                isLoading: false 
+                isLoading: false,
+                error: 'Не удалось загрузить данные пользователя'
               }));
             }
           } catch (userError) {
@@ -112,7 +116,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             setState(prev => ({ 
               ...prev, 
               isAuthenticated: true, 
-              isLoading: false 
+              isLoading: false,
+              error: 'Ошибка при получении данных пользователя'
             }));
           }
         } else {
@@ -155,43 +160,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           });
         } else {
           // Если API не вернул данные пользователя, создаем базовый объект
-          const user: User = {
-            id: '1', // Временный ID
-            email: response.email,
-            first_name: '', // Эти данные должны приходить с сервера
-            last_name: '',
-            department: '',
-            team: Team.GENERAL,
-            position: '',
-            category: Category.GENERAL
-          };
-          
+          // и устанавливаем ошибку
           setState({
-            user,
+            user: null,
             isAuthenticated: true,
             isLoading: false,
-            error: null,
+            error: 'Не удалось загрузить данные пользователя',
           });
+          console.error('Failed to fetch user data after login');
         }
       } catch (userError) {
         console.error('Error fetching user data:', userError);
-        // Создаем объект пользователя на основе email
-        const user: User = {
-          id: '1', // Временный ID
-          email: response.email,
-          first_name: '', 
-          last_name: '',
-          department: '',
-          team: Team.GENERAL,
-          position: '',
-          category: Category.GENERAL
-        };
-        
+        // Устанавливаем флаг аутентификации, но не устанавливаем данные пользователя
         setState({
-          user,
+          user: null,
           isAuthenticated: true,
           isLoading: false,
-          error: null,
+          error: 'Ошибка при получении данных пользователя',
         });
       }
       
@@ -221,7 +206,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isLoading: false,
         error: null,
       }));
-      router.push('/login');
+      router.push('/auth/login');
     } catch (error) {
       setState(prev => ({
         ...prev,
@@ -250,7 +235,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isLoading: false,
         error: null,
       });
-      router.push('/login');
+      router.push('/auth/login');
     }
   };
 

@@ -2,7 +2,6 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
-import { userApi } from '@/lib/api/user';
 
 /**
  * Клиентский компонент для отображения содержимого дашборда
@@ -13,8 +12,6 @@ export function DashboardContent() {
   
   // Состояние для отображения ошибки загрузки данных пользователя
   const [error, setError] = useState<string | null>(null);
-  // Состояние для отслеживания загрузки данных пользователя
-  const [loadingUserData, setLoadingUserData] = useState<boolean>(false);
   
   // Эффект для обработки ошибок при загрузке данных пользователя
   useEffect(() => {
@@ -25,30 +22,11 @@ export function DashboardContent() {
     }
   }, [isAuthenticated, user]);
 
-  // Эффект для принудительного обновления данных пользователя
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (isAuthenticated && !isLoading) {
-        try {
-          setLoadingUserData(true);
-          await userApi.getCurrentUser();
-          setLoadingUserData(false);
-        } catch (err) {
-          console.error('Error refreshing user data:', err);
-          setLoadingUserData(false);
-          setError('Не удалось обновить данные пользователя');
-        }
-      }
-    };
-
-    fetchUserData();
-  }, [isAuthenticated, isLoading]);
-
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Панель управления</h1>
       
-      {isLoading || loadingUserData ? (
+      {isLoading ? (
         <div className="flex justify-center">
           <p className="text-xl">Загрузка данных...</p>
         </div>
