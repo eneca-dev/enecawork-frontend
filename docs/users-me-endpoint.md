@@ -56,24 +56,14 @@ export const userApi = {
    */
   getCurrentUser: async (): Promise<User | null> => {
     try {
-      const token = getAuthToken();
-      if (!token) {
-        return null;
-      }
-
-      const response = await fetch(`${API_URL}/users/me`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
+      // Токен будет автоматически добавлен в заголовки через axiosInstance
+      const response = await api.get('/users/me');
+      
       if (!response.ok) {
         throw new Error('Failed to fetch user data');
       }
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error('Error fetching user data:', error);
       throw error;
@@ -147,28 +137,30 @@ useEffect(() => {
 
 ## Отображение данных пользователя
 
-Данные пользователя можно получить в любом компоненте с помощью хука `useAuth`:
+Данные пользователя отображаются в компонентах `UserProfile` и `HomeUserProfile`:
 
 ```typescript
-import { useAuth } from '@/hooks/useAuth';
-
+// components/features/Dashboard/UserProfile.tsx
 export function UserProfile() {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, error } = useAuth();
 
-  if (isLoading) {
-    return <div>Загрузка...</div>;
-  }
-
-  if (!user) {
-    return <div>Пользователь не авторизован</div>;
-  }
+  // ... код обработки состояний загрузки и ошибок
 
   return (
-    <div>
-      <h2>Профиль пользователя</h2>
-      <p>Имя: {user.first_name}</p>
-      <p>Фамилия: {user.last_name}</p>
-      <p>Email: {user.email}</p>
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-xl font-semibold mb-4">Профиль пользователя</h2>
+      <div className="mb-2">
+        <span className="font-medium">ID:</span> {user.id}
+      </div>
+      <div className="mb-2">
+        <span className="font-medium">Email:</span> {user.email}
+      </div>
+      {user.first_name && (
+        <div className="mb-2">
+          <span className="font-medium">Имя:</span> {user.first_name}
+        </div>
+      )}
+      {/* Другие поля пользователя */}
     </div>
   );
 }
@@ -193,14 +185,29 @@ app.add_middleware(
 Ответ от эндпоинта соответствует схеме `UserInformationResponse`:
 
 ```typescript
-interface UserInformationResponse {
-  first_name: string;
-  last_name: string;
+// Бэкенд (Python/Pydantic)
+class UserInformationResponse(BaseModel):
+    id: str
+    email: EmailStr
+    department_id: str = None
+    team_id: str = None
+    position_id: str = None
+    category_id: str = None
+    created_at: str = None
+    first_name: str = None
+    last_name: str = None
+
+// Фронтенд (TypeScript)
+export interface User {
+  id: string;
   email: string;
-  department: string;
-  team: string;
-  position: string;
-  category: string;
+  first_name?: string;
+  last_name?: string;
+  department_id?: string;
+  team_id?: string;
+  position_id?: string;
+  category_id?: string;
+  created_at?: string;
 }
 ```
 

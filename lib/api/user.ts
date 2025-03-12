@@ -17,10 +17,11 @@ export const userApi = {
           email: response.data.email,
           first_name: response.data.first_name,
           last_name: response.data.last_name,
-          department: response.data.department,
-          team: response.data.team,
-          position: response.data.position,
-          category: response.data.category
+          department_id: response.data.department_id,
+          team_id: response.data.team_id,
+          position_id: response.data.position_id,
+          category_id: response.data.category_id,
+          created_at: response.data.created_at
         };
       }
       
