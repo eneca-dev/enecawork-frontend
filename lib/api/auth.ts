@@ -10,6 +10,7 @@ import {
 } from '@/types/auth.types';
 import api from './axios';
 import { API_URL } from '@/lib/config/constants';
+import axios from 'axios';
 
 /**
  * API для работы с аутентификацией
@@ -19,11 +20,19 @@ export const authApi = {
    * Вход в систему
    */
   login: async (data: LoginRequest): Promise<LoginResponse> => {
+    console.log('API login function called');
     try {
+      console.log('Sending POST request to /auth/login');
       const response = await api.post('/auth/login', data);
+      console.log('API login response received:', { status: response.status });
       return response.data;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Login API error details:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error response:', error.response?.data);
+        console.error('Axios error status:', error.response?.status);
+        console.error('Axios error headers:', error.response?.headers);
+      }
       throw error;
     }
   },

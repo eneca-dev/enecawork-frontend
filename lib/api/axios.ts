@@ -11,27 +11,70 @@ const api = axios.create({
   },
 });
 
+// Список публичных эндпоинтов, которые не требуют токена
+const PUBLIC_ENDPOINTS = [
+  '/auth/login',
+  '/auth/register',
+  '/auth/reset-password',
+  '/auth/update-password'
+];
+
 // Добавляем токен к каждому запросу
 api.interceptors.request.use(
   async (config) => {
-    // Получаем действующий токен перед каждым запросом
+    console.log('Axios request interceptor:', { 
+      url: config.url, 
+      method: config.method,
+      baseURL: config.baseURL
+    });
+    
+    // Проверяем, является ли эндпоинт публичным
+    const isPublicEndpoint = PUBLIC_ENDPOINTS.some(endpoint => 
+      config.url?.includes(endpoint)
+    );
+    
+    if (isPublicEndpoint) {
+      console.log('Public endpoint, no auth token needed');
+      return config;
+    }
+    
+    // Получаем действующий токен перед каждым запросом для защищенных эндпоинтов
     const token = await tokenService.getValidToken();
     
     if (token) {
+      console.log('Adding auth token to request');
       config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      console.log('No auth token available');
     }
     
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error('Axios request interceptor error:', error);
+    return Promise.reject(error);
+  }
 );
 
 // Обрабатываем ошибки и обновляем токен при необходимости
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('Axios response interceptor:', { 
+      status: response.status, 
+      url: response.config.url 
+    });
+    return response;
+  },
   async (error: AxiosError) => {
+    console.error('Axios response interceptor error:', { 
+      message: error.message,
+      status: error.response?.status,
+      url: error.config?.url
+    });
+    
     // Проверяем, что ошибка связана с ответом сервера
     if (!error.response) {
+      console.error('No response from server');
       return Promise.reject(error);
     }
 

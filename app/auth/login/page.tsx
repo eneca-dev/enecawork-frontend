@@ -1,11 +1,7 @@
-import { LoginForm } from '@/components/features/Auth/LoginForm';
-import { Metadata } from 'next';
-import { Suspense } from 'react';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Вход | Eneca Work',
-  description: 'Вход в систему Eneca Work',
-};
+import { LoginForm } from '@/components/features/Auth/LoginForm';
+import { Suspense } from 'react';
 
 /**
  * Страница входа

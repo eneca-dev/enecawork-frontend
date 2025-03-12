@@ -20,11 +20,17 @@ export function LoginForm() {
    * Обработчик отправки формы
    */
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('Form submit started');
     e.preventDefault();
+    console.log('preventDefault called');
+    
     try {
+      console.log('Attempting login with:', { email, password: '***' });
       await login({ email, password });
+      console.log('Login successful, redirect should happen in AuthContext');
       // Перенаправление произойдет в AuthContext
     } catch (err) {
+      console.error('Login error caught in handleSubmit:', err);
       // Ошибка уже обрабатывается в AuthContext
     }
   };

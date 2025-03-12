@@ -135,19 +135,27 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
    * Вход в систему
    */
   const login = async (data: LoginRequest) => {
+    console.log('AuthContext login started');
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     try {
+      console.log('Sending login request to API');
       const response = await authApi.login(data);
+      console.log('Login API response received:', { email: response.email });
+      
+      console.log('Setting auth tokens');
       setAuthToken(response.access_token);
       setRefreshToken(response.refresh_token);
       
       // Настраиваем проактивное обновление токена
+      console.log('Setting up silent refresh');
       tokenService.setupSilentRefresh(response.access_token);
       
       // Получаем данные пользователя с сервера
       try {
+        console.log('Fetching user data');
         const userData = await userApi.getCurrentUser();
         if (userData) {
+          console.log('User data received:', { id: userData.id, email: userData.email });
           setState({
             user: userData,
             isAuthenticated: true,
@@ -155,6 +163,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             error: null,
           });
         } else {
+          console.warn('No user data received from API');
           // Если API не вернул данные пользователя, создаем базовый объект
           // и устанавливаем ошибку
           setState({
@@ -176,8 +185,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
       }
       
+      console.log('Redirecting to:', DEFAULT_AUTH_REDIRECT);
       router.push(DEFAULT_AUTH_REDIRECT);
     } catch (error) {
+      console.error('Login error in AuthContext:', error);
       setState(prev => ({
         ...prev,
         isLoading: false,
