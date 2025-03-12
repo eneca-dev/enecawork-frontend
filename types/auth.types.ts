@@ -123,6 +123,7 @@ export interface UpdatePasswordRequest {
  */
 export interface RefreshTokenRequest {
   refresh_token: string;
+  device_id?: string;
 }
 
 /**

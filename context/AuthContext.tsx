@@ -7,6 +7,8 @@ import { authApi } from '@/lib/api/auth';
 import { userApi } from '@/lib/api/user';
 import { setAuthToken, removeAuthToken, getAuthToken, setRefreshToken, getRefreshToken, removeRefreshToken, isTokenValid } from '@/lib/utils/auth';
 import { DEFAULT_AUTH_REDIRECT } from '@/lib/config/constants';
+import { tokenService } from '@/lib/services/TokenService';
+import { generateDeviceId, getDeviceId, setDeviceId } from '@/lib/services/DeviceService';
 
 /**
  * Интерфейс контекста аутентификации
@@ -46,23 +48,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       // Проверяем валидность токена
-      if (isTokenValid(token)) {
+      if (tokenService.isTokenValid(token)) {
+        // Настраиваем проактивное обновление
+        tokenService.setupSilentRefresh(token);
         return true;
       }
 
       // Если токен невалиден, пробуем обновить его
-      const refreshToken = getRefreshToken();
-      if (!refreshToken) {
-        removeAuthToken();
-        setState(prev => ({ ...prev, isAuthenticated: false }));
-        return false;
-      }
-
-      // Запрос на обновление токена
-      const response = await authApi.refreshToken(refreshToken);
-      setAuthToken(response.access_token);
-      setRefreshToken(response.refresh_token);
-      return true;
+      const newToken = await tokenService.refreshToken();
+      return !!newToken;
     } catch (error) {
       console.error('Token refresh error:', error);
       removeAuthToken();
@@ -144,9 +138,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = async (data: LoginRequest) => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     try {
-      const response = await authApi.login(data);
+      // Получаем или генерируем идентификатор устройства
+      const deviceId = getDeviceId() || generateDeviceId();
+      
+      // Добавляем deviceId к запросу на вход
+      const loginData = { ...data, device_id: deviceId };
+      
+      const response = await authApi.login(loginData);
       setAuthToken(response.access_token);
       setRefreshToken(response.refresh_token);
+      
+      // Сохраняем идентификатор устройства
+      setDeviceId(deviceId);
+      
+      // Настраиваем проактивное обновление токена
+      tokenService.setupSilentRefresh(response.access_token);
       
       // Получаем данные пользователя с сервера
       try {
